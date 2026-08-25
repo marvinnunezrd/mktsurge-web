@@ -21,6 +21,12 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
+// Escapa texto libre antes de meterlo en el HTML del correo de aviso, para
+// que un nombre/notas con "<" o "&" no rompan el formato del mensaje.
+function esc(str) {
+  return String(str).replace(/[&<>"']/g, c => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[c]));
+}
+
 const form = document.getElementById("lead-form");
 if (form) {
   // Si llegaron desde el catálogo con un servicio específico ("Solicitar este
@@ -77,6 +83,29 @@ if (form) {
       form.reset();
       msg.textContent = "¡Listo! Recibimos tu mensaje — te contactamos muy pronto.";
       msg.className = "lead-form-msg ok";
+
+      // Aviso por correo de que llegó un lead nuevo (vía la extensión "Trigger
+      // Email" de Firebase, que envía un correo por cada documento creado en
+      // la colección "mail"). Si esto falla no afecta al visitante — el lead
+      // ya quedó guardado y visible en el Pipeline de todos modos.
+      try {
+        await addDoc(collection(db, "mail"), {
+          to: ["marvin@mktsurge.com"],
+          message: {
+            subject: `Nuevo lead: ${name}`,
+            html: `<p><b>Nuevo lead desde mktsurge.com</b></p>
+<p><b>Nombre:</b> ${esc(name)}<br>
+<b>Contacto:</b> ${esc(contact)}<br>
+<b>Servicio de interés:</b> ${esc(service || "(sin especificar)")}<br>
+<b>Notas:</b> ${esc(notes || "(sin notas)")}<br>
+<b>Página:</b> ${esc(location.pathname)}</p>
+<p>Entra al CRM (Pipeline) para verlo y darle seguimiento.</p>`
+          },
+          createdAt: serverTimestamp()
+        });
+      } catch (mailErr) {
+        console.error("[lead-form] no se pudo encolar el correo de aviso:", mailErr);
+      }
     } catch (err) {
       console.error("[lead-form] error al enviar:", err);
       msg.textContent = "No pudimos enviar el formulario. Escríbenos por WhatsApp o a hola@mktsurge.com.";
