@@ -31,6 +31,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=Public+Sans:wght@400;500;600;700&family=Caveat:wght@600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/css/styles.css">
 <script src="assets/js/main.js" defer></script>
+<script type="module" src="assets/js/lead-form.js"></script>
 </head>
 <body>
 
@@ -228,11 +229,46 @@
       <div>
         <h2>¿Listo para que tu marca dé el siguiente paso?</h2>
         <p>Cuéntanos qué necesitas y te respondemos con una propuesta concreta — sin compromiso, estés donde estés. Trabajamos en persona en NJ y también completamente en línea.</p>
+        <div class="hero-ctas" style="margin-top:24px;">
+          <a class="btn btn-ghost" style="border-color:rgba(251,246,239,0.35); color:inherit;" href="https://wa.me/19295308974" target="_blank" rel="noopener">Prefiero WhatsApp</a>
+        </div>
       </div>
-      <div class="hero-ctas" style="margin-top:0;">
-        <a class="btn btn-primary" href="mailto:hola@mktsurge.com?subject=Quiero%20una%20cotizaci%C3%B3n">Escríbenos por email</a>
-        <a class="btn btn-ghost" style="border-color:rgba(251,246,239,0.35); color:inherit;" href="https://wa.me/19295308974" target="_blank" rel="noopener">WhatsApp</a>
-      </div>
+      <form class="lead-form" id="lead-form" novalidate>
+        <div class="field">
+          <label for="lead-name">Nombre</label>
+          <input type="text" id="lead-name" name="name" required maxlength="150" autocomplete="name" placeholder="Tu nombre o el de tu negocio">
+        </div>
+        <div class="field">
+          <label for="lead-contact">Teléfono o correo</label>
+          <input type="text" id="lead-contact" name="contact" required maxlength="150" autocomplete="tel" placeholder="Para responderte">
+        </div>
+        <div class="field">
+          <label for="lead-service">Servicio de interés</label>
+          <select id="lead-service" name="service">
+            <option value="">Todavía no sé / quiero orientación</option>
+            <option>Branding e Identidad Visual</option>
+            <option>Diseño Gráfico Digital e Impreso</option>
+            <option>Campañas para Eventos y Aniversarios</option>
+            <option>Gestión de Redes Sociales</option>
+            <option>Publicidad Paga</option>
+            <option>Email Marketing</option>
+            <option>SEO Local y con IA</option>
+            <option>Desarrollo Web</option>
+            <option>Producción Audiovisual y Locución</option>
+            <option>Marketing Musical</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="lead-notes">Cuéntanos brevemente qué necesitas (opcional)</label>
+          <textarea id="lead-notes" name="notes" maxlength="2000" rows="3"></textarea>
+        </div>
+        <div class="field lead-form-honeypot" aria-hidden="true">
+          <label for="lead-company">Empresa</label>
+          <input type="text" id="lead-company" name="company" tabindex="-1" autocomplete="off">
+        </div>
+        <div class="lead-form-msg" id="lead-form-msg" role="status"></div>
+        <button type="submit" class="btn btn-primary" id="lead-form-submit">Enviar</button>
+      </form>
     </div>
   </div>
 </section>

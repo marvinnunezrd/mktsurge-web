@@ -1,0 +1,89 @@
+// MKT Surge — formulario de contacto del sitio público.
+// Escribe directamente en la colección "leads" del mismo proyecto de Firebase
+// que usa MKT Surge OS (mkt-surge-crm), así el lead entra al pipeline sin que
+// nadie tenga que transcribirlo a mano desde un correo o WhatsApp.
+//
+// El objeto firebaseConfig no es secreto — está protegido por la regla de
+// seguridad de Firestore (solo permite "create" con datos válidos, nunca leer
+// ni modificar nada), no por ocultar estos valores.
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAHBxHvEn4r6lrwXAA4-v51moazcR0edKo",
+  authDomain: "mkt-surge-crm.firebaseapp.com",
+  projectId: "mkt-surge-crm",
+  storageBucket: "mkt-surge-crm.firebasestorage.app",
+  messagingSenderId: "286597522649",
+  appId: "1:286597522649:web:cd6b5424ddcaf874d5cac8"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+const form = document.getElementById("lead-form");
+if (form) {
+  // Si llegaron desde el catálogo con un servicio específico ("Solicitar este
+  // servicio"), lo preseleccionamos en el formulario.
+  try {
+    const params = new URLSearchParams(location.search);
+    const preselect = params.get("service");
+    if (preselect && form.service) {
+      const opt = Array.from(form.service.options).find(o => o.value === preselect);
+      if (opt) form.service.value = preselect;
+    }
+  } catch (e) { /* no bloquea el formulario si algo aquí falla */ }
+
+  const msg = document.getElementById("lead-form-msg");
+  const submitBtn = document.getElementById("lead-form-submit");
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    msg.textContent = "";
+    msg.className = "lead-form-msg";
+
+    const name = form.name.value.trim();
+    const contact = form.contact.value.trim();
+    const service = form.service.value;
+    const notes = form.notes.value.trim();
+    const honeypot = form.company.value.trim();
+
+    if (honeypot) return; // relleno solo por bots — se ignora en silencio
+
+    if (!name || !contact) {
+      msg.textContent = "Escribe tu nombre y un teléfono o correo para contactarte.";
+      msg.className = "lead-form-msg err";
+      return;
+    }
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Enviando…";
+    try {
+      await addDoc(collection(db, "leads"), {
+        name,
+        contact,
+        services: service ? [service] : [],
+        service: service || "",
+        value: null,
+        notes,
+        clientId: null,
+        stage: "nuevo",
+        source: "sitio-publico",
+        page: location.pathname,
+        honeypot: "",
+        createdByUid: null,
+        createdAt: serverTimestamp()
+      });
+      form.reset();
+      msg.textContent = "¡Listo! Recibimos tu mensaje — te contactamos muy pronto.";
+      msg.className = "lead-form-msg ok";
+    } catch (err) {
+      console.error("[lead-form] error al enviar:", err);
+      msg.textContent = "No pudimos enviar el formulario. Escríbenos por WhatsApp o a hola@mktsurge.com.";
+      msg.className = "lead-form-msg err";
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = "Enviar";
+    }
+  });
+}

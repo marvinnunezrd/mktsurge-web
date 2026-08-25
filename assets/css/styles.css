@@ -184,6 +184,24 @@ section.flush{ border-top:none; }
 .cta-band p{ color:rgba(251,246,239,0.72); margin-top:10px; }
 :root[data-theme="dark"] .cta-band p{ color:var(--ink-soft); }
 
+/* ---- formulario de contacto (cta-band) ---- */
+.lead-form{ display:flex; flex-direction:column; gap:14px; width:100%; max-width:380px; }
+.lead-form .field{ display:flex; flex-direction:column; gap:6px; }
+.lead-form label{ font-family:'IBM Plex Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:.05em; color:rgba(251,246,239,0.65); }
+.lead-form input, .lead-form select, .lead-form textarea{
+  background:rgba(251,246,239,0.08); border:1px solid rgba(251,246,239,0.28); border-radius:10px;
+  padding:11px 13px; color:#FBF6EF; font-family:'Public Sans',ui-sans-serif,system-ui,sans-serif; font-size:0.92rem;
+}
+.lead-form select{ color-scheme:dark; }
+.lead-form input::placeholder, .lead-form textarea::placeholder{ color:rgba(251,246,239,0.4); }
+.lead-form textarea{ resize:vertical; min-height:64px; font-family:inherit; }
+.lead-form input:focus, .lead-form select:focus, .lead-form textarea:focus{ outline:2px solid var(--orange); outline-offset:1px; }
+.lead-form-honeypot{ position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden; }
+.lead-form-msg{ font-size:0.85rem; min-height:1.2em; }
+.lead-form-msg.ok{ color:#B7D869; }
+.lead-form-msg.err{ color:#FFB3A7; }
+.lead-form button[disabled]{ opacity:.6; cursor:not-allowed; }
+
 /* ---- footer ---- */
 footer{ padding:52px 0 60px; }
 .footer-inner{ display:flex; justify-content:space-between; align-items:flex-start; gap:24px; flex-wrap:wrap; }
