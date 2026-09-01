@@ -272,3 +272,25 @@ footer{ padding:52px 0 60px; }
   .navlinks a:hover{ background:var(--surface-2); }
   .cta-band{ padding:40px 28px; }
 }
+
+/* ---- catálogo público: tarjetas por área (levantamiento ago. 2026) ---- */
+.area-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(420px,1fr)); gap:24px; }
+.area-card{
+  background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:30px 32px;
+  scroll-margin-top:90px; transition:border-color .15s ease;
+}
+.area-card:hover{ border-color:var(--orange); }
+.area-card-head{ display:grid; grid-template-columns:auto 1fr auto; gap:16px; align-items:start; }
+.area-num{ font-family:'Archivo',sans-serif; font-weight:900; font-size:2rem; color:var(--line); line-height:1; }
+.area-card-head h2{ font-size:1.32rem; }
+.area-count{
+  font-family:'IBM Plex Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:.06em;
+  color:var(--orange-deep); background:var(--orange-soft); padding:5px 11px; border-radius:100px; white-space:nowrap;
+  height:fit-content;
+}
+.area-tasks{ margin-top:20px; }
+@media (max-width:560px){
+  .area-card{ padding:24px 22px; }
+  .area-card-head{ grid-template-columns:auto 1fr; }
+  .area-count{ grid-column:1 / -1; justify-self:start; margin-top:8px; }
+}
