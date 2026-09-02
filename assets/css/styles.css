@@ -77,8 +77,8 @@ p{ margin:0; }
 .btn:hover{ transform:translateY(-1px); }
 .btn-primary{ background:var(--orange); color:var(--ink-on-orange); box-shadow:var(--shadow-lg); }
 .btn-primary:hover{ box-shadow:0 24px 50px -18px rgba(255,165,0,0.55); }
-.btn-ghost{ background:transparent; color:var(--ink); border-color:var(--line); }
-.btn-ghost:hover{ border-color:var(--ink-faint); }
+.btn-ghost{ background:transparent; color:var(--ink); border-color:var(--ink-faint); }
+.btn-ghost:hover{ border-color:var(--orange); }
 .btn-sm{ padding:9px 18px; font-size:0.85rem; }
 
 /* ---- nav ---- */
@@ -90,10 +90,10 @@ p{ margin:0; }
 .navlinks a{ text-decoration:none; font-size:14px; font-weight:600; color:var(--ink-soft); padding:8px 14px; border-radius:100px; white-space:nowrap; }
 .navlinks a:hover{ color:var(--ink); background:var(--surface-2); }
 .navlinks a.current{ color:var(--orange-deep); }
-.nav-toggle{ display:none; background:none; border:1.5px solid var(--line); border-radius:8px; font-size:17px; line-height:1; cursor:pointer; color:var(--ink); padding:8px 11px; }
+.nav-toggle{ display:none; background:none; border:1.5px solid var(--ink-faint); border-radius:8px; font-size:17px; line-height:1; cursor:pointer; color:var(--ink); padding:8px 11px; }
 .theme-toggle{
   flex:0 0 auto; width:38px; height:38px; border-radius:50%;
-  background:var(--surface); border:1.5px solid var(--line); color:var(--ink);
+  background:var(--surface); border:1.5px solid var(--ink-faint); color:var(--ink);
   font-size:15px; cursor:pointer; display:flex; align-items:center; justify-content:center;
 }
 .theme-toggle:hover{ background:var(--surface-2); }
@@ -141,11 +141,18 @@ section.flush{ border-top:none; }
 
 /* ---- case studies ---- */
 .case-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:22px; }
-.case-card{ background:var(--surface-2); border-radius:var(--radius); padding:28px; border:1px solid var(--line); }
+.case-card{
+  background:var(--surface-2); border-radius:var(--radius); padding:28px; border:1px solid var(--line);
+  display:block; text-decoration:none; color:inherit;
+  transition:border-color .15s ease, transform .15s ease, box-shadow .15s ease;
+}
+.case-card:hover{ border-color:var(--orange); transform:translateY(-2px); box-shadow:var(--shadow-lg); }
 .case-card .kicker{ font-family:'IBM Plex Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:.07em; color:var(--ink-faint); margin-bottom:10px; }
 .case-card h3{ font-size:1.2rem; margin-bottom:10px; }
 .case-card p{ color:var(--ink-soft); font-size:0.95rem; }
 .case-card .metric{ margin-top:16px; padding-top:16px; border-top:1px dashed var(--line); font-family:'Archivo',sans-serif; font-weight:700; color:var(--orange-deep); font-size:0.95rem; }
+.case-card .go{ margin-top:14px; display:inline-block; font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--orange-deep); font-weight:600; }
+.case-card:hover .go{ text-decoration:underline; }
 
 /* ---- portfolio (proyectos reales) ---- */
 .portfolio-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:22px; }
@@ -168,8 +175,42 @@ section.flush{ border-top:none; }
 .portfolio-body .go{ margin-top:auto; padding-top:8px; font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--orange-deep); font-weight:600; text-decoration:none; display:inline-block; }
 .portfolio-body .go:hover{ text-decoration:underline; }
 .social-row{ display:flex; gap:8px; flex-wrap:wrap; margin-top:2px; }
-.social-row a{ font-family:'IBM Plex Mono',monospace; font-size:10.5px; text-decoration:none; color:var(--ink-soft); border:1px solid var(--line); padding:4px 9px; border-radius:100px; }
+.social-row a{ font-family:'IBM Plex Mono',monospace; font-size:10.5px; text-decoration:none; color:var(--ink); border:1.5px solid var(--ink-faint); padding:4px 9px; border-radius:100px; }
 .social-row a:hover{ color:var(--orange-deep); border-color:var(--orange); }
+
+/* ---- promo: Departamento de Evangelización Digital ---- */
+.promo-strip{
+  background:linear-gradient(120deg, var(--orange-soft), var(--blue-soft));
+  border-radius:24px; padding:40px 44px; display:flex; justify-content:space-between;
+  align-items:center; gap:28px; flex-wrap:wrap;
+}
+.promo-strip h2{ font-size:1.5rem; max-width:32ch; }
+.promo-strip p{ color:var(--ink-soft); margin-top:8px; max-width:48ch; }
+@media (max-width:640px){ .promo-strip{ padding:28px 24px; } }
+
+/* ---- paquete del Departamento (pricing box) ---- */
+.pkg-box{ background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:36px 40px; }
+@media (max-width:560px){ .pkg-box{ padding:26px 22px; } }
+.pkg-phase{ display:flex; gap:18px; padding:18px 0; border-bottom:1px dashed var(--line); }
+.pkg-phase:first-child{ padding-top:0; }
+.pkg-phase-tag{
+  flex:0 0 auto; font-family:'IBM Plex Mono',monospace; font-size:11px; font-weight:700; letter-spacing:.06em;
+  text-transform:uppercase; color:var(--orange-deep); background:var(--orange-soft); border-radius:100px;
+  padding:6px 13px; height:fit-content; white-space:nowrap;
+}
+.pkg-phase h3{ font-size:1.05rem; margin-bottom:6px; }
+.pkg-phase p{ color:var(--ink-soft); font-size:0.93rem; }
+@media (max-width:480px){ .pkg-phase{ flex-direction:column; gap:8px; } }
+.pkg-row{ display:flex; justify-content:space-between; align-items:baseline; padding:14px 0; border-bottom:1px dashed var(--line); gap:20px; }
+.pkg-row:last-child{ border-bottom:none; }
+.pkg-row span:first-child{ font-family:'Archivo',sans-serif; font-weight:700; }
+.pkg-row span:last-child{ font-family:'IBM Plex Mono',monospace; color:var(--orange-deep); font-weight:600; white-space:nowrap; text-align:right; }
+.pkg-row.pkg-total{ padding-top:18px; }
+.pkg-row.pkg-total span:last-child{ font-size:1.15rem; }
+.pkg-includes{ list-style:none; margin:24px 0 0; padding:0; display:flex; flex-direction:column; gap:10px; }
+.pkg-includes li{ display:flex; gap:10px; font-size:0.93rem; color:var(--ink-soft); }
+.pkg-includes li::before{ content:"✓"; color:var(--green); font-weight:700; }
+.pkg-note{ margin-top:24px; padding-top:20px; border-top:1px solid var(--line); font-size:0.88rem; color:var(--ink-faint); }
 
 /* ---- CTA band ---- */
 .cta-band{
@@ -219,15 +260,15 @@ footer{ padding:52px 0 60px; }
 .cat-hero{ padding:64px 0 44px; }
 .cat-toc{ display:flex; flex-wrap:wrap; gap:8px; margin-top:26px; }
 .cat-toc a{
-  font-family:'IBM Plex Mono',monospace; font-size:12px; text-decoration:none; color:var(--ink-soft);
-  padding:7px 13px; border:1px solid var(--line); border-radius:100px;
+  font-family:'IBM Plex Mono',monospace; font-size:12px; text-decoration:none; color:var(--ink);
+  padding:7px 13px; border:1.5px solid var(--ink-faint); border-radius:100px;
 }
 .cat-toc a:hover{ border-color:var(--orange); color:var(--orange-deep); }
 
 .service-block{ padding:56px 0; border-top:1px solid var(--line); scroll-margin-top:80px; }
 .service-block-inner{ display:grid; grid-template-columns:0.85fr 1.15fr; gap:44px; }
 @media (max-width:820px){ .service-block-inner{ grid-template-columns:1fr; } }
-.service-num{ font-family:'Archivo',sans-serif; font-weight:900; font-size:3rem; color:var(--line); line-height:1; }
+.service-num{ font-family:'Archivo',sans-serif; font-weight:900; font-size:3rem; color:var(--ink-faint); line-height:1; }
 .service-head h2{ font-size:1.7rem; margin-top:10px; }
 .service-includes{ list-style:none; margin:22px 0 0; padding:0; display:flex; flex-direction:column; gap:12px; }
 .service-includes li{ display:flex; gap:12px; align-items:flex-start; font-size:0.95rem; color:var(--ink-soft); }
@@ -281,7 +322,7 @@ footer{ padding:52px 0 60px; }
 }
 .area-card:hover{ border-color:var(--orange); }
 .area-card-head{ display:grid; grid-template-columns:auto 1fr auto; gap:16px; align-items:start; }
-.area-num{ font-family:'Archivo',sans-serif; font-weight:900; font-size:2rem; color:var(--line); line-height:1; }
+.area-num{ font-family:'Archivo',sans-serif; font-weight:900; font-size:2rem; color:var(--ink-faint); line-height:1; }
 .area-card-head h2{ font-size:1.32rem; }
 .area-count{
   font-family:'IBM Plex Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:.06em;
