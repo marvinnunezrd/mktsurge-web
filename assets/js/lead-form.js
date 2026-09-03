@@ -27,6 +27,28 @@ function esc(str) {
   return String(str).replace(/[&<>"']/g, c => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[c]));
 }
 
+// Textos del formulario según el idioma de la página (<html lang="...">), para
+// que las páginas en /en/ muestren sus mensajes en inglés sin duplicar este
+// archivo — el resto de la lógica (Firestore, honeypot, etc.) es igual en los
+// dos idiomas.
+const LANG = document.documentElement.lang === "en" ? "en" : "es";
+const STR = {
+  es: {
+    missing: "Escribe tu nombre y un teléfono o correo para contactarte.",
+    sending: "Enviando…",
+    send: "Enviar",
+    ok: "¡Listo! Recibimos tu mensaje — te contactamos muy pronto.",
+    err: "No pudimos enviar el formulario. Escríbenos por WhatsApp o a hola@mktsurge.com."
+  },
+  en: {
+    missing: "Enter your name and a phone number or email so we can reach you.",
+    sending: "Sending…",
+    send: "Send",
+    ok: "Done! We got your message — we'll be in touch soon.",
+    err: "We couldn't send the form. Message us on WhatsApp or at hola@mktsurge.com."
+  }
+}[LANG];
+
 const form = document.getElementById("lead-form");
 if (form) {
   // Si llegaron desde el catálogo con un servicio específico ("Solicitar este
@@ -57,13 +79,13 @@ if (form) {
     if (honeypot) return; // relleno solo por bots — se ignora en silencio
 
     if (!name || !contact) {
-      msg.textContent = "Escribe tu nombre y un teléfono o correo para contactarte.";
+      msg.textContent = STR.missing;
       msg.className = "lead-form-msg err";
       return;
     }
 
     submitBtn.disabled = true;
-    submitBtn.textContent = "Enviando…";
+    submitBtn.textContent = STR.sending;
     try {
       await addDoc(collection(db, "leads"), {
         name,
@@ -81,7 +103,7 @@ if (form) {
         createdAt: serverTimestamp()
       });
       form.reset();
-      msg.textContent = "¡Listo! Recibimos tu mensaje — te contactamos muy pronto.";
+      msg.textContent = STR.ok;
       msg.className = "lead-form-msg ok";
 
       // Aviso por correo de que llegó un lead nuevo (vía la extensión "Trigger
@@ -108,11 +130,11 @@ if (form) {
       }
     } catch (err) {
       console.error("[lead-form] error al enviar:", err);
-      msg.textContent = "No pudimos enviar el formulario. Escríbenos por WhatsApp o a hola@mktsurge.com.";
+      msg.textContent = STR.err;
       msg.className = "lead-form-msg err";
     } finally {
       submitBtn.disabled = false;
-      submitBtn.textContent = "Enviar";
+      submitBtn.textContent = STR.send;
     }
   });
 }
